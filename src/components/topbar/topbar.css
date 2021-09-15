@@ -61,3 +61,24 @@ font-family: 'Varela Round', sans-serif; */
   cursor: pointer;
   margin-left: 15px;
 }
+
+@media only screen and (max-width: 700px) {
+  .top {
+    display: flex;
+    height: 100px;
+  }
+  .topLeft,
+  .topRight,
+  .topCenter {
+    flex: 4;
+  }
+  .topLeft {
+    padding-left: 5px;
+  }
+  .topRight {
+    padding-right: 5px;
+  }
+  .topList {
+    display: block;
+  }
+}

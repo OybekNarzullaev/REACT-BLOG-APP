@@ -61,3 +61,27 @@
   font-size: 16px;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 700px) {
+  .write {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .writeFormGroup,
+  .writeImg {
+    padding-left: 7vw;
+    margin-left: 7vw;
+  }
+  .writeSubmit {
+    top: 75px;
+  }
+  .writeInput,
+  .writeText {
+    width: 70vw;
+  }
+  .writeText {
+    margin-top: 50px;
+  }
+}
