@@ -14,6 +14,11 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
     });
 
+    const result = await User.findOne({ username: newUser.username });
+    if (result) {
+      return res.status(400).json("This username already exist!");
+    }
+
     const user = await newUser.save();
     return res.status(200).json(user);
   } catch (err) {
@@ -21,20 +26,19 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
+//LOGIN
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    !user && res.status(400).json("Wrong Credentials!");
+    if (!user) return res.status(400).json("Wrong credentials!");
 
-    // validation password
-    const validate = await bcrypt.compare(req.body.password, user.password);
-    !validate && res.status(400).json("Wrong Credentials!");
+    const validated = await bcrypt.compare(req.body.password, user.password);
+    if (validated) return res.status(400).json("Wrong credentials!");
 
     const { password, ...others } = user._doc;
-    res.status(200).json(others);
+    return res.status(200).json(others);
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 

@@ -2,19 +2,18 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Post = require("../models/Post");
 
-// CREATE
+//CREATE POST
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
-  console.log(newPost);
   try {
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 
-// UPDATE
+//UPDATE POST
 router.put("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -25,58 +24,55 @@ router.put("/:id", async (req, res) => {
           {
             $set: req.body,
           },
-          {
-            new: true,
-          }
+          { new: true }
         );
         res.status(200).json(updatedPost);
       } catch (err) {
-        return res.status(500).json(err);
+        res.status(500).json(err);
       }
     } else {
-      return res.status(401).json("You can update only your post");
+      res.status(401).json("You can update only your post!");
     }
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 
-// DELETE
+//DELETE POST
 router.delete("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post) {
+    if (post.username === req.body.username) {
       try {
-        await Post.findByIdAndDelete(req.params.id);
-        res.status(200).json("Post has been deleted!");
+        await post.delete();
+        res.status(200).json("Post has been deleted...");
       } catch (err) {
-        return res.status(500).json(err);
+        res.status(500).json(err);
       }
     } else {
-      return res.status(401).json("You can delete only your post!");
+      res.status(401).json("You can delete only your post!");
     }
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 
-// GET
+//GET POST
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 
-// GET ALL
+//GET ALL POSTS
 router.get("/", async (req, res) => {
+  const username = req.query.user;
+  const catName = req.query.cat;
   try {
     let posts;
-    const username = req.query.user;
-    const catName = req.query.cat;
-
     if (username) {
       posts = await Post.find({ username });
     } else if (catName) {
@@ -90,7 +86,7 @@ router.get("/", async (req, res) => {
     }
     res.status(200).json(posts);
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json(err);
   }
 });
 

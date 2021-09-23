@@ -19,6 +19,18 @@
   display: flex;
   align-items: center;
 }
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.categories {
+  display: flex;
+  width: 100%;
+}
+.category {
+  flex: 2;
+}
 
 .writeIcon {
   width: 25px;
